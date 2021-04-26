@@ -16,30 +16,19 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "RecursiveDuplicateFinder.h"
+#ifndef DUPEDETECT_SIZE_H
+#define DUPEDETECT_SIZE_H
 
-#include <filesystem>
-#include "Blake3Hash.h"
-#include "Options.h"
-#include "DuplicateFindUtils.h"
+#include <string>
 
 namespace DupeDetect
 {
-	RecursiveDuplicateFinder::RecursiveDuplicateFinder(const std::string& dirPath)
-	{
-		std::filesystem::recursive_directory_iterator it(dirPath);
-
-		for (const auto &path : it)
-		{
-			if (isDirectoryEntryValid(*it))
-			{
-				paths.push_back(path);
-			}
-		}
-	}
-
-	std::vector<std::vector<std::filesystem::path>> RecursiveDuplicateFinder::findDuplicates()
-	{
-		return DupeDetect::findDuplicates(paths.cbegin(), paths.cend(), Blake3_hashFile);
-	}
+	/**
+	 * Retrieves the size in bytes specified by this string
+	 * @param str the string containing the byte size i.e 100mb
+	 * @return the size, in bytes, this string represents
+	 */
+	uintmax_t getByteSizeFromString(const std::string& str);
 }
+
+#endif //DUPEDETECT_SIZE_H

@@ -16,30 +16,26 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "RecursiveDuplicateFinder.h"
-
 #include <filesystem>
-#include "Blake3Hash.h"
 #include "Options.h"
-#include "DuplicateFindUtils.h"
+#include "Size.h"
 
 namespace DupeDetect
 {
-	RecursiveDuplicateFinder::RecursiveDuplicateFinder(const std::string& dirPath)
+	bool isDirectoryEntryValid(const std::filesystem::directory_entry &entry)
 	{
-		std::filesystem::recursive_directory_iterator it(dirPath);
+		auto min = Options::optionFound("minsize") ? getByteSizeFromString(Options::getOpt<std::string>("minsize")) : 0;
+		auto max = Options::optionFound("maxsize") ? getByteSizeFromString(Options::getOpt<std::string>("maxsize"))
+												   : std::numeric_limits<uintmax_t>::max();
 
-		for (const auto &path : it)
+		if (entry.is_regular_file())
 		{
-			if (isDirectoryEntryValid(*it))
+			auto size = entry.file_size();
+			if (size > min && size < max)
 			{
-				paths.push_back(path);
+				return true;
 			}
 		}
-	}
-
-	std::vector<std::vector<std::filesystem::path>> RecursiveDuplicateFinder::findDuplicates()
-	{
-		return DupeDetect::findDuplicates(paths.cbegin(), paths.cend(), Blake3_hashFile);
+		return false;
 	}
 }

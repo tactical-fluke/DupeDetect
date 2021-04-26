@@ -30,7 +30,9 @@ std::vector<option> optionsList{
 		{'v',          "verbose", false},
 		{std::nullopt, "help",    false},
 		{'d',          "depth",   true},
-		{'l',          "license", false}
+		{'l',          "license", false},
+		{'s',          "minsize", true},
+		{'S',          "maxsize", true}
 };
 
 void printUsage()
@@ -38,10 +40,25 @@ void printUsage()
 	std::cout << "usage: DupeDetect [OPTIONS...] [DIRECTORY]\n";
 	std::cout << "Compiles a list of duplicate files by recursively searching in a given directory\n";
 	std::cout << "OPTIONS -\n";
-	std::cout << "\t-v, --verbose\tprint each filename as it is checked\n";
-	std::cout << "\t--help\t\tprints this message\n";
-	std::cout << "\t-d, --depth\tdefines the maximum depth to search to\n";
+	std::cout << "\t-v, --verbose\tPrint each filename as it is checked\n";
+	std::cout << "\t--help\t\tPrints this message\n";
+	std::cout << "\t-d, --depth\tDefines the maximum depth to search to\n";
 	std::cout << "\t-l, --license\tPrints out the license information for this program\n";
+	std::cout << "\t-s, --minsize\tSets the minimum size for files to be checked. Size information below\n";
+	std::cout << "\t-S, --maxsize\tSets the maximum size for files to be checked. Size information below\n";
+
+	std::cout << "\n\n";
+
+	std::cout << "\t\tSIZE INFO\n";
+	std::cout << "\tSizes are specified via an amount and a suffix, i.e 1Mb (1 megabyte).\n";
+	std::cout << "\tThe supported suffixes are as follows:\n";
+	std::cout << "\t\tb - byte\n";
+	std::cout << "\t\tkb - kibibyte (1024 bytes)\n";
+	std::cout << "\t\tKb - kilobyte (1000 bytes)\n";
+	std::cout << "\t\tmb - mebibyte (1024 kibibytes)\n";
+	std::cout << "\t\tMb - megabyte (1000 kilobytes)\n";
+	std::cout << "\t\tgb - gibibyte (1024 mebibytes)\n";
+	std::cout << "\t\tGb - gigabyte (1024 megabytes)\n";
 }
 
 void printLicense()
@@ -77,7 +94,7 @@ int main(int argc, char **argv)
 		printUsage();
 		return EXIT_SUCCESS;
 	}
-	else if(Options::optionFound("license"))
+	else if (Options::optionFound("license"))
 	{
 		printLicense();
 		return EXIT_SUCCESS;
@@ -91,7 +108,7 @@ int main(int argc, char **argv)
 		directory = cwd + directory;
 	}
 
-	if(!std::filesystem::exists(directory))
+	if (!std::filesystem::exists(directory))
 	{
 		std::cout << "The specified directory \"" << directory << "\" does not exist\n\n";
 		printUsage();
@@ -102,7 +119,8 @@ int main(int argc, char **argv)
 
 	if (Options::optionFound("depth"))
 	{
-		duplicateFinder = std::make_unique<DupeDetect::DepthLimitedDuplicateFinder>(directory, Options::getOpt<int>("depth"));
+		duplicateFinder = std::make_unique<DupeDetect::DepthLimitedDuplicateFinder>(directory,
+																					Options::getOpt<int>("depth"));
 	}
 	else
 	{
@@ -113,11 +131,11 @@ int main(int argc, char **argv)
 
 	for (const auto &duplicateList : duplicates)
 	{
-		for(const auto& duplicate : duplicateList)
+		for (const auto &duplicate : duplicateList)
 		{
 			std::cout << duplicate.generic_string() << ", ";
 		}
-		std:: cout << "\n";
+		std::cout << "\n";
 	}
 	return EXIT_SUCCESS;
 }

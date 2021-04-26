@@ -7,7 +7,7 @@ if(NOT MSVC)
     find_package(TBB)
 endif()
 
-add_executable(DupeDetect main.cpp Blake3Hash.cpp RecursiveDuplicateFinder.cpp Options.cpp StringUtils.cpp DepthLimitedDuplicateFinder.cpp DepthLimitedDuplicateFinder.h DuplicateFinder.h DuplicateFindUtils.h)
+add_executable(DupeDetect main.cpp Blake3Hash.cpp RecursiveDuplicateFinder.cpp Options.cpp StringUtils.cpp DepthLimitedDuplicateFinder.cpp DepthLimitedDuplicateFinder.h DuplicateFindUtils.h Size.cpp DuplicateFindUtils.cpp)
 add_subdirectory(BLAKE3)
 
 target_link_libraries(DupeDetect BLAKE3)

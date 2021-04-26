@@ -43,7 +43,7 @@ namespace DupeDetect
 			std::filesystem::directory_iterator it(path);
 			for (const auto &subPath : it)
 			{
-				if (subPath.is_regular_file())
+				if (isDirectoryEntryValid(*it))
 				{
 					paths.push_back(subPath);
 				}

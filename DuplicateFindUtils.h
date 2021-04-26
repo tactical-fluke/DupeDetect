@@ -23,9 +23,20 @@
 #include <map>
 #include <vector>
 #include <mutex>
+#include "Options.h"
+#include "Size.h"
 
 namespace DupeDetect
 {
+	/**
+	 * Generic function that finds duplicate entries via the hasher supplied
+	 * @tparam iterator_t iterator type
+	 * @tparam hasher_t hasher type; gene
+	 * @param start The start iterator for the range to find duplicates within
+	 * @param end the past the end iterator for the range to find duplicates within
+	 * @param hasher The hasher object, by which the hashes to determine uniqueness are calculated
+	 * @return A vector of Vectors, each vector being a list of duplicate items
+	 */
 	template<class iterator_t, class hasher_t>
 	auto findDuplicates(iterator_t start, iterator_t end, hasher_t&& hasher)
 	{
@@ -78,6 +89,13 @@ namespace DupeDetect
 		});
 		return ret;
 	}
+
+	/**
+	 * Determines whether a directory entry is valid to add to a list of files to be checked for duplicates
+	 * @param entry the entry to check validity for
+	 * @return true if the directory entry is valid to check, false otherwise
+	 */
+	bool isDirectoryEntryValid(const std::filesystem::directory_entry& entry);
 }
 
 #endif //DUPEDETECT_DUPLICATEFINDUTILS_H
