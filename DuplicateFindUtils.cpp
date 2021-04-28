@@ -24,9 +24,11 @@ namespace DupeDetect
 {
 	bool isDirectoryEntryValid(const std::filesystem::directory_entry &entry)
 	{
-		auto min = Options::optionFound("minsize") ? getByteSizeFromString(Options::getOpt<std::string>("minsize")) : 0;
-		auto max = Options::optionFound("maxsize") ? getByteSizeFromString(Options::getOpt<std::string>("maxsize"))
-												   : std::numeric_limits<uintmax_t>::max();
+		static const auto min = Options::optionFound("minsize") ? getByteSizeFromString(
+				Options::getOpt<std::string>("minsize")) : 0;
+		static const auto max = Options::optionFound("maxsize") ? getByteSizeFromString(
+				Options::getOpt<std::string>("maxsize"))
+																: std::numeric_limits<uintmax_t>::max();
 
 		if (entry.is_regular_file())
 		{
