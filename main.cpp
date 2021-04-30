@@ -116,18 +116,27 @@ int main(int argc, char **argv)
 	}
 
 	std::unique_ptr<DupeDetect::DuplicateFinder> duplicateFinder;
+	decltype(duplicateFinder->findDuplicates()) duplicates;
 
-	if (Options::optionFound("depth"))
+	try
 	{
-		duplicateFinder = std::make_unique<DupeDetect::DepthLimitedDuplicateFinder>(directory,
-																					Options::getOpt<int>("depth"));
-	}
-	else
-	{
-		duplicateFinder = std::make_unique<DupeDetect::RecursiveDuplicateFinder>(directory);
-	}
+		if (Options::optionFound("depth"))
+		{
+			duplicateFinder = std::make_unique<DupeDetect::DepthLimitedDuplicateFinder>(directory,
+																						Options::getOpt<int>("depth"));
+		}
+		else
+		{
+			duplicateFinder = std::make_unique<DupeDetect::RecursiveDuplicateFinder>(directory);
+		}
 
-	auto duplicates = duplicateFinder->findDuplicates();
+		duplicates = duplicateFinder->findDuplicates();
+	}
+	catch(const std::runtime_error& e)
+	{
+		std::cout << "error occurred: " << e.what() << "\n";
+		return EXIT_FAILURE;
+	}
 
 	for (const auto &duplicateList : duplicates)
 	{

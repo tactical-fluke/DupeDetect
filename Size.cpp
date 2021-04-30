@@ -24,6 +24,16 @@
 
 namespace
 {
+	constexpr int intPow(int base, int exponent)
+	{
+		int ret = 1;
+		for(int i = 0; i < exponent; i++)
+		{
+			ret = ret * base;
+		}
+		return ret;
+	}
+
 	uintmax_t getMultiplierForSuffix(std::string& suffix)
 	{
 		if(suffix == "b")
@@ -33,15 +43,15 @@ namespace
 		if(suffix == "Kb")
 			return 1000;
 		if(suffix == "mb")
-			return 1024 * 1024;
+			return intPow(1024, 2);
 		if(suffix == "Mb")
-			return 1000 * 1000;
+			return intPow(1000, 2);
 		if(suffix == "gb")
-			return 1024 * 1024 * 1024;
+			return intPow(1024, 3);
 		if(suffix == "Gb")
-			return 1000 * 1000 * 1000;
+			return intPow(1000, 3);
 
-		throw std::runtime_error("No such size suffix\"" + suffix + "\" known");
+		throw std::runtime_error("No such size suffix \"" + suffix + "\" known for byte size");
 	}
 }
 

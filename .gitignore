@@ -1,6 +1,5 @@
 *.a
 *.o
 *.cmake
-cmake-build-debug/
-cmake-build-minsizerel/
-.idea/
+cmake-build-*/
+.*/
