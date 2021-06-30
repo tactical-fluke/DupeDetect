@@ -18,7 +18,7 @@ namespace DupeDetect
     void parallelFor(iterator_t&& start, iterator_t&& end, closure_t&& closure)
     {
 #ifndef __APPLE__
-        std::for_each(std::execution::par, start, end, closure);
+        std::for_each(std::execution::par, std::forward<iterator_t>(start), std::forward<iterator_t>(end), std::forward<closure_t>(closure));
 #else
         dispatch_queue_t main_q = dispatch_queue_create("parallel for", nullptr);
 
