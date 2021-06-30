@@ -49,7 +49,7 @@ namespace DupeDetect
 
 		std::mutex m;
 
-        parallelFor(start, end, [&](const value_t& val)
+		parallelFor(start, end, [&](const value_t& val)
 		{
 			hash_t hashVal = hasher(val);
 
