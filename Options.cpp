@@ -20,6 +20,7 @@
 #include "StringUtils.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 std::vector<std::pair<option, option_status>> Options::options = std::vector<std::pair<option, option_status>>();
 
