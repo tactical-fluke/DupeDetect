@@ -25,6 +25,7 @@
 #include <mutex>
 #include "Options.h"
 #include "Size.h"
+#include "ParallelWrapper.h"
 
 namespace DupeDetect
 {
@@ -48,7 +49,7 @@ namespace DupeDetect
 
 		std::mutex m;
 
-		std::for_each(std::execution::par, start, end, [&](const value_t& val)
+		parallelFor(start, end, [&](const value_t& val)
 		{
 			hash_t hashVal = hasher(val);
 
